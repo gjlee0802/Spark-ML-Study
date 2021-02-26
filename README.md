@@ -25,13 +25,13 @@ $ pip install pyspark
 ## Pipelines
 
 ### 구성요소
-- Dataframe   
+#### Dataframe   
 Spark SQL의 DataFrame을 다양한 데이터 유형을 보유 할 수있는 ML 데이터 세트로 사용합니다.   
-- Transformer   
+#### Transformer   
 Transformer는 기능 변환기 및 학습 된 모델을 포함하는 추상화입니다.   
 원시 데이터를 다양한 방식으로 변환하는 메서드입니다.   
 데이터프레임에 새로운 칼럼을 추가하고 데이터를 변형합니다.   
-#### spark.ml.feature에 제공되는 트랜스포머 종류   
+##### spark.ml.feature에 제공되는 트랜스포머 종류   
   - Binarizer: 이 함수는 주어진 임계치를 기준으로 연속적인 변수를 이진 변수로 변환한다.   
   - Bucketizer: Binarizer와 비슷하다. 이 함수는 연속적인 변수를 주어진 임꼐치의 리스트를 기반으로 쪼개어 몇 개의 범위로 변환한다.   
   - ChiSqSelector: 이 함수는 모든 카테고리 변수들 중, 파라미터로 주어진 numTopFeatures개의 카테고리 변수들을 선택한다.   
@@ -65,10 +65,10 @@ Transformer는 기능 변환기 및 학습 된 모델을 포함하는 추상화�
   - VectorSlicer: dense든 sparse든 관계없이 피처 벡터에 대해 동작한다. 주어진 인덱스 리스트에 대해 피처 벡터의 값을 추출한다.   
   - Word2Vec: 스트링 문자를 입력으로 취해 {스트링,벡터} 형태로 변형한다.   
    
-- Estimator   
+#### Estimator   
 훈련용 데이터 세트에 머신 러닝 모델을 훈련시키거나 적합하도록 조정합니다.   
 Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 fit() 메서드를 구현합니다.   
-#### 제공하는 일곱 개의 분류 모델
+##### 제공하는 일곱 개의 분류 모델
   - LogisticRegression: 로지스틱 회귀는 데이터가 특정 클래스로 속하는 확률을 구하기 위해 로지스틱 함수를 사용한다.(현재 이진분류를 지원함.)   
   - DecisionTreeClassifier: 관찰된 데이터에 대한 클래스를 예측하는 결정트리 모델을 생성한다.   
   - GBTClassifier: Gradient Boosted Tree모델이다. 여러 개의 약한 모델들을 뭉쳐서 강한 모델을 만들어내는 앙상블 모델 그룹에 속한다.   
@@ -76,7 +76,7 @@ Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 
   - NaiveBayes: 베이즈 이론에 기반하여 데이터를 분류하기 위해 조건부 확률을 사용한다.    
   - MultilayerPerceptronClassifier: 입력층과 은닉층에 있는 신경은 시그모이드 활성 함수를 이용, 출력층에서는 소프트맥스 함수를 이용한다.      
   - OneVsRest: 여러 클래스에 대한 분류를 이진 분류로 축소한다.   
-#### 제공하는 일곱 개의 회귀 모델
+##### 제공하는 일곱 개의 회귀 모델
   - AFTSurvivalRegression: Accelerated Failure Time 모델을 학습니다.   
   - DecisionTreeRegressor: 결정 트리 분류 모델과 비슷하나 레이블이 이진 데이터가 아니라 연속적인 데이터이거나 여러개의 레이블을 가지는 데이터다.   
   - GBTRegressor: DecisionTreeRegressor에서처럼 레이블 타입만 다르다.   
@@ -85,13 +85,13 @@ Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 
   - LinearRegression: 가장 간단한 회귀 모델이다. 피처들 사이의 관계가 선형이고 레이블이 연속적인 값이며 오차가 정규 분포를 띈다는 것을 가정한 모델이다.   
   - RandomForestRegerssor: 분리된 값이 아닌 연속적인 값들에 대해 학습한다.(DecisionTreeRegressor나 GBTRegressor와 비슷함.)   
 
-#### 제공하는 대표적인 군집화 모델
+##### 제공하는 대표적인 군집화 모델
   - BisectingKMeans: 계층적 군집화와 K-평균 군집화 알고리즘의 조합이다. 모든 데이터를 하나의 군집으로 놓고 시작하며 반복적으로 K개의 군집으로 나눈다.   
   - KMeans: 각각의 데이터와 군집 사이 거리 제곱의 합을 최소화하는 중심을 반복적으로 계산하면서 가장 최적화된 K개의 중심을 찾아가는 모델이다.   
   - GaussianMixture: 이 함수는 데이터셋을 분석하기 위해 K 가우시안 분포를 알려지지 않은 파라미터와 같이 사용한다.   
   - LDA: 자연어 처리에서 토픽 모델링을 하는 데에 사용한다.   
-
-- Pipeline   
+   
+#### Pipeline   
 파이프 라인은 여러 Transformer와 Estimator을 함께 연결하여 ML workflow를 지정합니다.   
 ML workflow는 데이터 프로세싱, 특성 추출, 모델 훈련까지 구성하는 것입니다.   
 머신 러닝에서는 데이터를 처리하고 학습하기 위해 일련의 알고리즘을 실행하는 것이 일반적입니다.   
@@ -100,7 +100,7 @@ MLlib는 특정 순서로 실행될 일련의 PipelineStage (Transformer 및 Est
   - 각 문서의 텍스트를 단어로 분할합니다.   
   - 각 문서의 단어를 숫자 특징 벡터로 변환합니다.   
   - 특징 벡터 및 레이블을 사용하여 예측 모델을 학습합니다.   
-- Parameter
+#### Parameter
   
 ### 어떻게 동작하는가?
 파이프 라인은 일련의 단계로 지정되며 각 단계는 Transformer 또는 Estimator입니다.   
