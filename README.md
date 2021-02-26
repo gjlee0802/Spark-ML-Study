@@ -30,12 +30,52 @@ Spark SQL의 DataFrame을 다양한 데이터 유형을 보유 할 수있는 ML 
 - Transformer   
 Transformer는 기능 변환기 및 학습 된 모델을 포함하는 추상화입니다.   
 원시 데이터를 다양한 방식으로 변환하는 메서드입니다.   
-기술적으로 Transformer는 일반적으로 하나 이상의 열을 추가하여 하나의 DataFrame을 다른 DataFrame으로 변환하는 transform () 메서드를 구현합니다.   
-
+데이터프레임에 새로운 칼럼을 추가하고 데이터를 변형합니다.   
+**spark.ml.feature에 제공되는 트랜스포머 종류**   
+  - Binarizer: 이 함수는 주어진 임계치를 기준으로 연속적인 변수를 이진 변수로 변환한다.   
+  - Bucketizer: Binarizer와 비슷하다. 이 함수는 연속적인 변수를 주어진 임꼐치의 리스트를 기반으로 쪼개어 몇 개의 범위로 변환한다.   
+  - ChiSqSelector: 이 함수는 모든 카테고리 변수들 중, 파라미터로 주어진 numTopFeatures개의 카테고리 변수들을 선택한다.   
+     여기서 선택된 변수들은 타깃의 분산을 잘 나타내는 변수들이다. 이는 차이-스퀘어 데스트를 통해 가능하다.   
+  - CountVectorizer: 이 함수는 [['Leaning','Pyspark'],['us']] 와 같은 분리된 텍스트에 유용하다.   
+    우선 fit()을 수행해 데이터셋의 패턴을 학습하고 그 결과를 CountVectorizerModel로 변형한다.
+  - DCT(Discrete Cosine Transform): 이 함수는 실수로 이뤄진 벡터를 입력으로 받고, 다른 빈도로 진동하는 같은 길이의 벡터를 리턴한다.   
+    데이터셋에서의 기본 빈도를 추출하거나 데이터를 압축할 때 유용하다.   
+  - ElementwiseProduct: 이 함수는 이 함수에 전달된 벡터와 scalingVec 파라미터를 곱한 것을 리턴하는 함수다.   
+    예를 들어 [10.0,3.0,15.0]을 벡터로 전달하고 scalingVec파라미터가 [0.99,3.30,0.66]라면 [9.9,9.9,9.9]를 리턴한다.
+  - HashingTF: 분리된 텍스트를 리스트로 입력받아서 카운트 벡터를 리턴하는 Hashing Trick Transformer이다.   
+  - ID(Inverse Document Frequency): 주어진 도큐먼트 리스트에 대한 IDF값을 구한다.   
+    도큐먼트는 HashingTF나 CountVectorizer을 이용해 미리 벡터로 표현돼 있어야 한다.   
+  - IndexToString: 이 함수는 StringIndexer 함수에 대한 보완이다.   
+  - MaxAbsScaler: 데이터를 [-1.0,1.0]범위 사이로 재조정한다.
+  - MinMaxScaler: 이는 [0.0,1.0]범위 사이로 재조정한다.
+  - NGram: 분리된 텍스트를 입력으로 받아서 n-gram을 리턴한다. (2,3,n개의 단어를 합쳐줌.)   
+  - Nomalizer: p-norm 값을 이용해 데이터를 단위 크기로 조정한다.(기본값으로 p를 2로 설정해 L2를 사용함.)   
+  - OneHotEncoder: 카테고리 칼럼을 이진 벡터 칼럼으로 인코딩한다.   
+  - PCA(Principal Component Analysis): 데이터 축소를 수행한다.   
+  - PolynomialExpansion: 한 벡터에 대해 다항 확장을 수행한다.   
+  - QuantileDiscretizer: Bucketizer 함수와 비슷하나 splits파라미터를 전달하는 대신에 numBuckets라는 파라미터를 전달한다.   
+    대략적인 데이터의 양을 계산해 어느 정도로 나눌 것인지를 정한다.   
+  - RegexTokenizer: 정규 표현식을 이용한 스트링 분리기이다.
+  - StandardScaler: 칼럼이 평균0, 표준편차1인 표준정규분포를 갖도록 한다.   
+  - StopWordsRemover: 분리된 텍스트로부터 'the'나 'a'같은 단어들을 제거한다.   
+  - StringIndexer: 한 칼럼에 주어진 모든 워드 리스트에 대해 이 함수는 인덱스 벡터를 생성한다.   
+  - Tokenizer: 스트링을 소문자로 변환하고 스페이스를 기준으로 분리하는 함수이다.   
+  - VectorAssembler: 여러 개의 숫자 칼럼을 벡터 형태의 한 칼럼으로 변환해주는 **아주 유용한** 트랜스포머이다.   
+  - VectorIndexer: 카테고리 칼럼을 벡터 인덱스로 변환하는 데 쓰인다.   
+  - VectorSlicer: dense든 sparse든 관계없이 피처 벡터에 대해 동작한다. 주어진 인덱스 리스트에 대해 피처 벡터의 값을 추출한다.   
+  - Word2Vec: 스트링 문자를 입력으로 취해 {스트링,벡터} 형태로 변형한다.   
+   
 - Estimator   
 훈련용 데이터 세트에 머신 러닝 모델을 훈련시키거나 적합하도록 조정합니다.   
-Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 fit () 메서드를 구현합니다.
-
+Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 fit() 메서드를 구현합니다.
+**제공하는 일곱 개의 분류 모델**   
+  - LogisticRegression: 로지스틱 회귀는 데이터가 특정 클래스로 속하는 확률을 구하기 위해 로지스틱 함수를 사용한다.(현재 이진분류를 지원함.)   
+  - DecisionTreeClassifier   
+  - GBTClassifier: Gradient Boosted Tree모델이다. 여러 개의 약한 모델들을 뭉쳐서 강한 모델을 만들어내는 앙상블 모델 그룹에 속한다.   
+  - RandomForestClassifier   
+  - NaiveBayes   
+  - MultilayerPerceptronClassifier   
+  - OneVsRest   
 - Pipeline   
 파이프 라인은 여러 Transformer와 Estimator을 함께 연결하여 ML workflow를 지정합니다.   
 ML workflow는 데이터 프로세싱, 특성 추출, 모델 훈련까지 구성하는 것입니다.   
