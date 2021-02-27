@@ -70,6 +70,7 @@ Transformer는 기능 변환기 및 학습 된 모델을 포함하는 추상화�
 Estimator는 DataFrame을 받아들이고 Transformer 인 Model을 생성하는 fit() 메서드를 구현합니다.   
 ##### 제공하는 일곱 개의 분류 모델
   - LogisticRegression: 로지스틱 회귀는 데이터가 특정 클래스로 속하는 확률을 구하기 위해 로지스틱 함수를 사용한다.(현재 이진분류를 지원함.)   
+                        [로지스틱 회귀 예제](https://github.com/gjlee0802/Spark-ML-Study/tree/main/births_transformed)
   - DecisionTreeClassifier: 관찰된 데이터에 대한 클래스를 예측하는 결정트리 모델을 생성한다.   
   - GBTClassifier: Gradient Boosted Tree모델이다. 여러 개의 약한 모델들을 뭉쳐서 강한 모델을 만들어내는 앙상블 모델 그룹에 속한다.   
   - RandomForestClassifier: 여러 개의 결정 트리를 만들고, 그 결정 트리들의 결과들을 예측 값으로 사용한다.   
