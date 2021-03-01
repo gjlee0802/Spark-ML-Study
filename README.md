@@ -32,6 +32,14 @@ You can access WebUI with following address
 ~~~
 $ pip install pyspark
 ~~~
+Set Spark Memory
+~~~
+vim $SPARK_HOME/conf/spark_defaults.conf
+~~~
+~~~
+spark.driver.memory              20g
+spark.driver.maxResultSize       5g
+~~~
 
 ## Pipelines
 
