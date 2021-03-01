@@ -13,13 +13,32 @@ $ bin/pyspark
 ~~~
 Move the directory into /usr/local/
 ~~~
-$ sudo mv spark-3.0.2-bin-hadoop2.7/ /usr/local/spark
+$ sudo mv spark-3.0.2-bin-hadoop2.7/ /usr/spark
 ~~~
+~~~
+$ vim ~/.bashrc
+~~~
+~~~
+export SPARK_HOME=/usr/spark
+export PATH=$SPARK_HOME/bin:$PATH
+~~~
+~~~
+$ source ~/.bashrc
+~~~
+
 You can access WebUI with following address   
 0.0.0.0:4040
 
 ~~~
 $ pip install pyspark
+~~~
+Set Spark Memory
+~~~
+vim $SPARK_HOME/conf/spark_defaults.conf
+~~~
+~~~
+spark.driver.memory              20g
+spark.driver.maxResultSize       5g
 ~~~
 
 ## Pipelines
